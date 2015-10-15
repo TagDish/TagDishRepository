@@ -1,0 +1,1 @@
+mvn install:install-file -DgeneratePom=true -DcreateChecksum=false -Dpackaging=jar -DgroupId=com.tagdish -DartifactId=tagdishrepository -Dversion=1.0 -Dfile=.\target\tagdishrepository-0.0.1-SNAPSHOT.jar
