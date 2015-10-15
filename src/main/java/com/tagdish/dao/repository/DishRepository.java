@@ -1,6 +1,5 @@
 package com.tagdish.dao.repository;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,8 +14,6 @@ public interface DishRepository extends ElasticsearchRepository < Dish, Long > {
 	
 	public Dish findByDishId(Long dishId);
 	
-	public LinkedList<Dish> findByDishNameContainingAndZipCodeIn(String name, Collection<Long> zipCode);
-
 	@Query("{\"match\" : {\"dishId\" : ?0}}")
 	public Dish getDishById(Long dishId);
 
