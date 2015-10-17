@@ -9,12 +9,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.tagdish.dao.jdbc.DishDAO;
-import com.tagdish.dao.jdbc.NotificationDAO;
-import com.tagdish.dao.jdbc.impl.DishDAOImpl;
-import com.tagdish.dao.jdbc.impl.NotificationDAOImpl;
-
-
 @Configuration
 @PropertySource(value = "classpath:mysql.properties")
 public class JDBCConfig {
@@ -48,16 +42,5 @@ public class JDBCConfig {
         dataSource.setPassword(mysqlPassword);
          
         return dataSource;
-    }
-	
-	@Bean
-    public NotificationDAO getNotificationDAO() {
-        return new NotificationDAOImpl(getDataSource());
-    }
-	
-	@Bean
-    public DishDAO getDishDAO() {
-        return new DishDAOImpl(getDataSource());
-    }
-	
+    }	
 }

@@ -15,11 +15,12 @@ public class NotificationRowMapper implements RowMapper<NotificationDB>{
 		NotificationDB notificationDB = new NotificationDB();
 		notificationDB.setNotificationId(rs.getLong(index++));
 		notificationDB.setTrasactionId(rs.getString(index++));
-		notificationDB.setUserId(rs.getLong(index++));
 		notificationDB.setAction(rs.getString(index++));
+		notificationDB.setUserId(rs.getLong(index++));
 		
+		
+		notificationDB.setTimestamp(rs.getTimestamp(index++).getTime());
 		notificationDB.setCount(rs.getInt(index++));
-		notificationDB.setTimestamp(rs.getLong(index++));
 		notificationDB.setData(rs.getString(index++));
 		
 		return notificationDB;		
