@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class DishSearchQueryDSLImpl implements DishSearchQueryDSL {
 		response = client.prepareSearch(TagDishDomainConstant.TAGDISH_INDEX_NAME)
 				.setTypes(TagDishDomainConstant.DISH_SEARCH_TYPE)
 				.setQuery(QueryBuilders.moreLikeThisQuery("dishName").likeText(name))
-				.setPostFilter(FilterBuilders.inFilter("zipCode", zipCodeList))
+//				.setPostFilter(FilterBuilders.inFilter("zipCode", zipCodeList))
 				.execute().actionGet();
 		
 		dishSearchList = convertSearchResponseToDishSearchList(response);
@@ -48,7 +47,7 @@ public class DishSearchQueryDSLImpl implements DishSearchQueryDSL {
 		response = client.prepareSearch(TagDishDomainConstant.TAGDISH_INDEX_NAME)
 				.setTypes(TagDishDomainConstant.DISH_SEARCH_TYPE)
 				.setQuery(QueryBuilders.fuzzyLikeThisQuery("dishName").likeText(name))
-				.setPostFilter(FilterBuilders.inFilter("zipCode", zipCodeList))
+//				.setPostFilter(FilterBuilders.inFilter("zipCode", zipCodeList))
 				.execute().actionGet();
 		
 		dishSearchList = convertSearchResponseToDishSearchList(response);
@@ -80,9 +79,14 @@ public class DishSearchQueryDSLImpl implements DishSearchQueryDSL {
 				dishSearch.setDishId(new Long((Integer) searchHit.getSource().get("dishId")));
 				dishSearch.setDishName((String) searchHit.getSource().get("dishName"));
 				dishSearch.setImageUrl((String) searchHit.getSource().get("imageUrl"));
-				dishSearch.setPrice((Float) searchHit.getSource().get("price"));
-				
-				dishSearch.setRestaurantId(new Long((Integer) searchHit.getSource().get("restaurantId")));
+				Double price = (Double) searchHit.getSource().get("price");
+				if(price == null) {
+					dishSearch.setPrice(0.0f);	
+				} else {
+					dishSearch.setPrice(price.floatValue());
+				}
+								
+				dishSearch.setRestaurantId((Long) searchHit.getSource().get("restaurantId"));
 				dishSearch.setRestaurantType((String) searchHit.getSource().get("restaurantType"));
 				
 				location.setLatitude((String) searchHit.getSource().get("latitude"));
