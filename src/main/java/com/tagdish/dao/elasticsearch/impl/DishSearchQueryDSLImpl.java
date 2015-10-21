@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class DishSearchQueryDSLImpl implements DishSearchQueryDSL {
 		response = client.prepareSearch(TagDishDomainConstant.TAGDISH_INDEX_NAME)
 				.setTypes(TagDishDomainConstant.DISH_SEARCH_TYPE)
 				.setQuery(QueryBuilders.fuzzyLikeThisQuery("dishName").likeText(name))
-//				.setPostFilter(FilterBuilders.inFilter("zipCode", zipCodeList))
+				.setPostFilter(FilterBuilders.inFilter("zipCode", zipCodeList))
 				.execute().actionGet();
 		
 		dishSearchList = convertSearchResponseToDishSearchList(response);
