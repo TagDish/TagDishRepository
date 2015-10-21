@@ -12,4 +12,6 @@ public interface DishSearchRepository extends ElasticsearchRepository < DishSear
 	public DishSearch findByDishId(Long dishId);
 	
 	public LinkedList<DishSearch> findByDishNameContainingAndZipCodeIn(String name, Collection<String> zipCode);
+	
+	public LinkedList<DishSearch> findByDishNameLikeAndZipCodeIn(String name, Collection<String> zipCode);
 }
