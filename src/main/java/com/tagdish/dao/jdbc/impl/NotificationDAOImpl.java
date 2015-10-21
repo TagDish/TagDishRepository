@@ -56,5 +56,12 @@ public class NotificationDAOImpl implements NotificationDAO, InitializingBean {
         notificationDBList = jdbcTemplate.query(sql, new NotificationPreparedStatementSetter(notificationDB), 
         		new NotificationRowMapper());  
         return notificationDBList;
-    }     
+    }   
+    
+    public  void createSearchResultLog(Long notificationId, String searchResult) {
+    	
+        String sql = "INSERT INTO searchresultlog (notificationId, result)"
+                + " VALUES (?, ?)";
+        jdbcTemplate.update(sql, notificationId, searchResult);      	
+    }
 }

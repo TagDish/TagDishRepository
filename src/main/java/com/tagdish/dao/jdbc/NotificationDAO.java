@@ -11,4 +11,6 @@ public interface NotificationDAO {
 	public abstract List<NotificationDB> getNotificationList(NotificationDB notificationDB);
 	
 	public abstract void updateNotification(NotificationDB notificationDB);
+	
+	public abstract void createSearchResultLog(Long notificationId, String searchResult);
 }
