@@ -1,6 +1,5 @@
 package com.tagdish.dao.elasticsearch.impl;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class DishSearchQueryDSLImpl implements DishSearchQueryDSL {
 	@Autowired
 	private Client client;
 
-	public List<DishSearch> searchDish(String name, Collection<Long> zipCodeList) {
+	public List<DishSearch> searchDish(String name, long[] zipCodeArray) {
 
 		LinkedList<DishSearch> dishSearchList = null;
 		SearchResponse response = null;
@@ -32,7 +31,7 @@ public class DishSearchQueryDSLImpl implements DishSearchQueryDSL {
 		response = client.prepareSearch(TagDishDomainConstant.TAGDISH_INDEX_NAME)
 				.setTypes(TagDishDomainConstant.DISH_SEARCH_TYPE)
 				.setQuery(QueryBuilders.moreLikeThisQuery("dishName").likeText(name))
-//				.setPostFilter(FilterBuilders.inFilter("zipCode", zipCodeList))
+				.setPostFilter(FilterBuilders.inFilter("zipCode", zipCodeArray))
 				.execute().actionGet();
 		
 		dishSearchList = convertSearchResponseToDishSearchList(response);
@@ -40,7 +39,7 @@ public class DishSearchQueryDSLImpl implements DishSearchQueryDSL {
 		return dishSearchList;
 	}
 	
-	public List<DishSearch> fuzzySearchDish(String name, Collection<Long> zipCodeList) {
+	public List<DishSearch> fuzzySearchDish(String name, long[] zipCodeArray) {
 
 		LinkedList<DishSearch> dishSearchList = null;
 		SearchResponse response = null;
@@ -48,7 +47,7 @@ public class DishSearchQueryDSLImpl implements DishSearchQueryDSL {
 		response = client.prepareSearch(TagDishDomainConstant.TAGDISH_INDEX_NAME)
 				.setTypes(TagDishDomainConstant.DISH_SEARCH_TYPE)
 				.setQuery(QueryBuilders.fuzzyLikeThisQuery("dishName").likeText(name))
-//				.setPostFilter(FilterBuilders.inFilter("zipCode", zipCodeList))
+				.setPostFilter(FilterBuilders.inFilter("zipCode", zipCodeArray))
 				.execute().actionGet();
 		
 		dishSearchList = convertSearchResponseToDishSearchList(response);
