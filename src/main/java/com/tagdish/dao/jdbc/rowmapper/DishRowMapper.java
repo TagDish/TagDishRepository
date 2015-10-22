@@ -37,6 +37,7 @@ public class DishRowMapper implements RowMapper<DishDB>{
         dishDB.setSpicyLevel(rs.getInt("spicyIndex"));
         
         dishDB.setImageDishUrl(rs.getString("imageUrl"));		
+        dishDB.setDeleteFlag(rs.getInt("del"));
 		
 		return dishDB;
 	}
