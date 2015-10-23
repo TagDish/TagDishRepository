@@ -10,6 +10,17 @@ import com.tagdish.domain.db.GeoTargetDB;
 import com.tagdish.domain.location.Location;
 
 public class AccountRowMapper implements RowMapper<AccountDB>{
+	
+	boolean fetchGeoTargetInfo;
+
+	public AccountRowMapper() {
+		super();
+	}
+
+	public AccountRowMapper(boolean fetchGeoTargetInfo) {
+		super();
+		this.fetchGeoTargetInfo = fetchGeoTargetInfo;
+	}
 
 	public AccountDB mapRow(ResultSet rs, int rowNum) throws SQLException {
 		
@@ -41,21 +52,24 @@ public class AccountRowMapper implements RowMapper<AccountDB>{
         accountDB.setAdditionalDetails(rs.getString("additionalDetails"));
         accountDB.setDeleted(rs.getInt("account.del"));
         
-        GeoTargetDB geoTargetDB = new GeoTargetDB();
-        geoTargetDB.setId(rs.getLong("geotarget.id"));
-        geoTargetDB.setAccountId(rs.getLong("adGroup_id"));
-        geoTargetDB.setAddress1(rs.getString("address1"));
-        geoTargetDB.setAddress2(rs.getString("address2"));
-        geoTargetDB.setCity(rs.getString("city"));
-        geoTargetDB.setState(rs.getString("state"));
-        geoTargetDB.setZipcode(rs.getLong("zipcode"));
-        
-        Location location = new Location();
-        location.setLatitude(rs.getString("lat"));
-        location.setLongitude(rs.getString("lng"));
-        geoTargetDB.setLocation(location);
-        
-        accountDB.setGeoTargetDB(geoTargetDB);
+        if(fetchGeoTargetInfo) {
+
+            GeoTargetDB geoTargetDB = new GeoTargetDB();
+            geoTargetDB.setId(rs.getLong("geotarget.id"));
+            geoTargetDB.setAccountId(rs.getLong("adGroup_id"));
+            geoTargetDB.setAddress1(rs.getString("address1"));
+            geoTargetDB.setAddress2(rs.getString("address2"));
+            geoTargetDB.setCity(rs.getString("city"));
+            geoTargetDB.setState(rs.getString("state"));
+            geoTargetDB.setZipcode(rs.getLong("zipcode"));
+            
+            Location location = new Location();
+            location.setLatitude(rs.getString("lat"));
+            location.setLongitude(rs.getString("lng"));
+            geoTargetDB.setLocation(location);
+            
+            accountDB.setGeoTargetDB(geoTargetDB);        	
+        }
 		return accountDB;
 	}
 }
